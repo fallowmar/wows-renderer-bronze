@@ -390,8 +390,8 @@ class RenderCog(commands.Cog):
         theme: app_commands.Choice[str] | None = None,
         flags: str | None = None,
     ) -> None:
-        preset_value = preset.value if preset else "full"
-        theme_value = theme.value if theme else "default"
+        preset_value = preset.value if preset else "playerdata"
+        theme_value = theme.value if theme else "brandon"
         flag_set = parse_flags(flags)
 
         # Validate
@@ -661,7 +661,7 @@ class RenderCog(commands.Cog):
         timeout: float,
         semaphore: asyncio.Semaphore,
         flag_set: frozenset[str] = frozenset(),
-        theme_value: str = "default",
+        theme_value: str = "brandon",
     ) -> _BatchResult:
         """Submit + await a single batch item, bounded by the semaphore so that
         at most ``max_workers`` submissions are in flight at once. This prevents
@@ -808,8 +808,8 @@ class RenderCog(commands.Cog):
             )
             return
 
-        preset_value = preset.value if preset else "full"
-        theme_value = theme.value if theme else "default"
+        preset_value = preset.value if preset else "playerdata"
+        theme_value = theme.value if theme else "brandon"
         flag_set = parse_flags(flags)
         raw = [replay1, replay2, replay3, replay4, replay5,
                replay6, replay7, replay8, replay9, replay10]
@@ -1086,7 +1086,7 @@ class RenderCog(commands.Cog):
         flags: str | None = None,
     ) -> None:
         flag_set = parse_flags(flags)
-        theme_value = theme.value if theme else "default"
+        theme_value = theme.value if theme else "brandon"
 
         # Validate both attachments
         max_bytes = self.config.max_upload_mb * 1024 * 1024

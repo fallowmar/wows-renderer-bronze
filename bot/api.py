@@ -342,7 +342,7 @@ def _build_job_spec(
     if kind != JOB_DUAL and "replay_b" in replays:
         raise _BadRequestError("replay_b: only valid for a render_dual job")
 
-    theme = fields.get("theme") or "default"
+    theme = fields.get("theme") or "brandon"
     _require_theme(theme)
     flags = parse_flags(fields.get("flags"))
 

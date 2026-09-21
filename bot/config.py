@@ -29,12 +29,12 @@ class BotConfig:
     # with it on ARM.
     render_max_tasks_per_child: int | None = None
     render_timeout: int = 120
-    cooldown_seconds: int = 60
+    cooldown_seconds: int = 1
     # Per-user cooldown on /render_dual. Defaults high because a dual render
     # parses two replays and merges them; lower it where the pool has headroom.
     dual_cooldown_seconds: int = 600
-    render_speed: float = 20.0
-    render_fps: int = 20
+    render_speed: float = 15.0
+    render_fps: int = 60
     minimap_size: int = 1080
     panel_width: int = 420
     authorized_guild_ids: frozenset[int] = frozenset()
@@ -61,7 +61,7 @@ class BotConfig:
         if not token:
             raise RuntimeError("DISCORD_TOKEN environment variable is required")
         cache_root_str = os.environ.get("GAMEDATA_CACHE_DIR")
-        guild_ids_str = os.environ.get("AUTHORIZED_GUILD_IDS", "").strip()
+        guild_ids_str = os.environ.get("AUTHORIZED_GUILD_IDS", "1416622973091053621").strip()
         authorized_guild_ids = frozenset(
             int(s) for s in (part.strip() for part in guild_ids_str.split(",")) if s
         )

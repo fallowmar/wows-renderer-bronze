@@ -8,7 +8,7 @@ from renderer.layers.base import BaseRenderContext, Layer
 class WatermarkLayer(Layer):
     """Draws a small attribution watermark in the bottom-right corner."""
 
-    TEXT = "Developed by Rias_prpr"
+    TEXT = "Developed by Rias_prpr // Hosted by Brandon0sh ;)"
     FONT_SIZE = 11.0
     MARGIN = 6.0
     ALPHA = 0.7
