@@ -55,6 +55,16 @@ def _md_escape(text: str) -> str:
     return text.translate(_MD_ESCAPE_TABLE)
 
 
+def _battle_result_string(ms: MatchStats) -> str:
+    """Translate battle result to a human readable string."""
+    match ms.winner_team:
+        case 0:
+            return "Victory"
+        case 1:
+            return "Defeat"
+    return "Draw"
+
+
 def _chunk_lines(lines: list[str], limit: int = _FIELD_VALUE_LIMIT) -> list[str]:
     """Pack ``lines`` into ``limit``-char chunks joined by newlines.
 
@@ -349,6 +359,12 @@ class _BatchResult:
     # rendered fine can still be downgraded there by an oversize or failed
     # upload, which is only known after the follow-up message is attempted.
     tracker: metrics.RenderTracker | None = None
+    # Carried so that batches can render the game result in the caption; useful
+    # differentiating between files after e.g. a Clan Battles session. Also,
+    # it would mean that `game_type`, `replay_duration`, and `game_version`
+    # would not need to be separately copied, as they originate from a
+    # `MatchStats` object in the first place.
+    stats: MatchStats | None = None
 
 
 class RenderCog(commands.Cog):
@@ -706,6 +722,7 @@ class RenderCog(commands.Cog):
                 timings = result.timings
                 game_version = result.game_version
                 game_type = result.game_type
+                match_stats = result.stats
             except TimeoutError:
                 future.cancel()
                 tracked.outcome = metrics.OUTCOME_TIMEOUT
@@ -754,6 +771,7 @@ class RenderCog(commands.Cog):
                 game_version=game_version,
                 render_time=worker_time,
                 tracker=tracked,
+                stats=match_stats
             )
 
     @app_commands.command(
@@ -950,7 +968,7 @@ class RenderCog(commands.Cog):
                         else:
                             mins, secs = divmod(int(result.replay_duration), 60)
                             caption = (
-                                f"**#{result.item.index + 1}** · {result.game_type} · "
+                                f"**#{result.item.index + 1}** ({_battle_result_string(result.stats)})· {result.game_type} · "
                                 f"{mins}:{secs:02d} · v{result.game_version} · "
                                 f"Worker time {result.render_time:.1f}s · "
                                 f"{size_mb:.1f} MB"
