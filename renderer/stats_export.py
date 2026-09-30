@@ -390,7 +390,7 @@ def build_match_stats(
         _player_row(p, ships_db, self_team_id, self_db_id, name_by_db_id, neutral_perspective)
         for p in results.players.values()
     ]
-    rows.sort(key=lambda r: (r.team, -r.damage, r.name))
+    rows.sort(key=lambda r: (r.team, -r.xp, r.name))
 
     if "anonymize" in flags:
         rows = _anonymize(rows)
